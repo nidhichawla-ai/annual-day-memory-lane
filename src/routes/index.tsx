@@ -90,7 +90,7 @@ function Index() {
     form.append("image", new File([photo], "photo.jpg", { type: "image/jpeg" }));
     form.append(
       "prompt",
-      `Turn the person in this photo into ${AVATARS[style]!.prompt}. Keep their face, hairstyle and expression recognizable. Festive RPS school Annual Day mood, vibrant colors, head and shoulders portrait.`,
+      `Turn the person in this photo into ${AVATARS[style]!.prompt}. Keep their face, hairstyle and expression recognizable. IMPORTANT: add a big bold festive banner in the background that clearly reads "RPS ANNUAL DAY" in large colorful glowing celebration letters — the text must be spelled exactly "RPS ANNUAL DAY". Head and shoulders portrait, vibrant colors.`,
     );
     form.append("quality", "low");
     form.append("size", "1024x1024");
