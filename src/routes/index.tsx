@@ -157,7 +157,7 @@ function Index() {
         </div>
 
         <h2 className="mt-10 text-center font-display text-2xl font-bold">Choose your avatar</h2>
-        <div className="mt-4 grid grid-cols-4 gap-3">
+        <div className="mt-4 grid grid-cols-5 gap-3">
           {AVATARS.map((a, i) => (
             <button
               key={a.name}
