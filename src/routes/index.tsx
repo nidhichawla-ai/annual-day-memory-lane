@@ -17,14 +17,16 @@ export const Route = createFileRoute("/")({
 });
 
 const AVATARS = [
-  { name: "Cartoon", emoji: "🎨", prompt: "a bright 3D Pixar-style cartoon character" },
-  { name: "Superhero", emoji: "🦸", prompt: "a comic book superhero with a cape and a glowing emblem" },
-  { name: "Anime", emoji: "🌸", prompt: "a colorful anime character with expressive eyes" },
-  { name: "Astronaut", emoji: "🚀", prompt: "an astronaut in a space suit with planets and stars behind" },
-  { name: "Royal", emoji: "👑", prompt: "a royal king or queen in a crown and regal robes, oil painting style" },
-  { name: "Pixel", emoji: "👾", prompt: "a retro 16-bit pixel art video game character" },
-  { name: "Wizard", emoji: "🪄", prompt: "a young wizard with a magic wand and sparkling spells" },
-  { name: "Clay", emoji: "🧸", prompt: "a cute claymation figure, stop-motion clay style" },
+  { name: "Cartoon", emoji: "🎨", prompt: "a bright glossy 3D Pixar-movie-style cartoon character with big sparkling eyes, soft studio lighting, joyful expression" },
+  { name: "Superhero", emoji: "🦸", prompt: "a mighty comic-book superhero in a dynamic pose, flowing red cape, glowing chest emblem, dramatic lightning and city skyline behind" },
+  { name: "Anime", emoji: "🌸", prompt: "a colorful anime hero with huge expressive eyes, flowing hair, cherry blossom petals and sparkles floating around, vibrant manga art style" },
+  { name: "Astronaut", emoji: "🚀", prompt: "a brave astronaut in a detailed white space suit with glowing visor reflections, floating among colorful nebulae, planets and shooting stars" },
+  { name: "Royal", emoji: "👑", prompt: "a majestic royal monarch with an ornate golden jeweled crown, ruby velvet robes, palace throne room behind, rich oil-painting style" },
+  { name: "Pixel", emoji: "👾", prompt: "a charming retro 16-bit pixel-art video game hero, chunky pixels, glowing arcade game screen background with coins and power-ups" },
+  { name: "Wizard", emoji: "🪄", prompt: "a wise young wizard with a pointed star hat, swirling glowing magic spell in hand, floating spell books and purple sparkling magic energy" },
+  { name: "Clay", emoji: "🧸", prompt: "an adorable claymation figure with fingerprint clay texture, soft stop-motion movie look, warm miniature film-set background" },
+  { name: "Rockstar", emoji: "🎸", prompt: "a cool rockstar with spiky hair, leather jacket and electric guitar, neon stage lights, laser beams and confetti exploding behind" },
+  { name: "Cricket Star", emoji: "🏏", prompt: "a cricket superstar in a glowing team jersey holding a golden bat aloft, roaring stadium floodlights and cheering crowd behind, triumphant celebration" },
 ];
 
 function Index() {
@@ -155,7 +157,7 @@ function Index() {
         </div>
 
         <h2 className="mt-10 text-center font-display text-2xl font-bold">Choose your avatar</h2>
-        <div className="mt-4 grid grid-cols-4 gap-3">
+        <div className="mt-4 grid grid-cols-5 gap-3">
           {AVATARS.map((a, i) => (
             <button
               key={a.name}
