@@ -88,7 +88,7 @@ function Index() {
     form.append("image", new File([photo], "photo.jpg", { type: "image/jpeg" }));
     form.append(
       "prompt",
-      `Turn the person in this photo into ${AVATARS[style].prompt}. Keep their face, hairstyle and expression recognizable. Festive school Annual Day mood, vibrant colors, head and shoulders portrait.`,
+      `Turn the person in this photo into ${AVATARS[style]!.prompt}. Keep their face, hairstyle and expression recognizable. Festive school Annual Day mood, vibrant colors, head and shoulders portrait.`,
     );
     form.append("quality", "low");
     form.append("size", "1024x1024");
@@ -135,7 +135,7 @@ function Index() {
               />
             ) : (
               <div className="flex h-full flex-col items-center justify-center gap-2 text-muted-foreground">
-                <span className={`text-6xl ${busy ? "animate-bounce" : ""}`}>{AVATARS[style].emoji}</span>
+                <span className={`text-6xl ${busy ? "animate-bounce" : ""}`}>{AVATARS[style]!.emoji}</span>
                 <span>{busy ? "Creating your avatar…" : "Your avatar appears here"}</span>
               </div>
             )}
@@ -169,7 +169,7 @@ function Index() {
 
         <div className="mt-6 text-center">
           <button onClick={make} disabled={!photo || busy} className="btn-festive text-lg">
-            {busy ? "✨ Working…" : `✨ Make me ${AVATARS[style].name}`}
+            {busy ? "✨ Working…" : `✨ Make me ${AVATARS[style]!.name}`}
           </button>
           {!photo && <p className="mt-2 text-sm text-muted-foreground">Take a photo first</p>}
           {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
