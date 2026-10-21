@@ -5,10 +5,10 @@ import { streamImage } from "@/lib/stream-image";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Annual Day Avatar Booth" },
-      { name: "description", content: "Snap a live photo and turn it into a fun avatar for School Annual Day." },
-      { property: "og:title", content: "Annual Day Avatar Booth" },
-      { property: "og:description", content: "Snap a live photo and turn it into a fun avatar for School Annual Day." },
+      { title: "RPS Annual Day Avatar Booth" },
+      { name: "description", content: "Snap a live photo and turn it into a fun avatar for RPS Annual Day." },
+      { property: "og:title", content: "RPS Annual Day Avatar Booth" },
+      { property: "og:description", content: "Snap a live photo and turn it into a fun avatar for RPS Annual Day." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -64,11 +64,11 @@ function Index() {
     if (!v) return;
     const size = Math.min(v.videoWidth, v.videoHeight);
     const c = document.createElement("canvas");
-    c.width = c.height = 768; // small = faster
+    c.width = c.height = 512; // small = faster
     const ctx = c.getContext("2d")!;
-    ctx.translate(768, 0);
+    ctx.translate(512, 0);
     ctx.scale(-1, 1);
-    ctx.drawImage(v, (v.videoWidth - size) / 2, (v.videoHeight - size) / 2, size, size, 0, 0, 768, 768);
+    ctx.drawImage(v, (v.videoWidth - size) / 2, (v.videoHeight - size) / 2, size, size, 0, 0, 512, 512);
     c.toBlob((b) => {
       if (!b) return;
       setPhoto(b);
@@ -88,10 +88,11 @@ function Index() {
     form.append("image", new File([photo], "photo.jpg", { type: "image/jpeg" }));
     form.append(
       "prompt",
-      `Turn the person in this photo into ${AVATARS[style]!.prompt}. Keep their face, hairstyle and expression recognizable. Festive school Annual Day mood, vibrant colors, head and shoulders portrait.`,
+      `Turn the person in this photo into ${AVATARS[style]!.prompt}. Keep their face, hairstyle and expression recognizable. Festive RPS school Annual Day mood, vibrant colors, head and shoulders portrait.`,
     );
     form.append("quality", "low");
     form.append("size", "1024x1024");
+    form.append("partial_images", "2");
     try {
       await streamImage("/api/edit-image", form, (src, isFinal) => {
         setResult(src);
@@ -108,7 +109,7 @@ function Index() {
     <main className="min-h-screen bg-festive px-4 py-10">
       <div className="mx-auto max-w-3xl">
         <header className="text-center">
-          <p className="font-display text-sm uppercase tracking-[0.3em] text-primary">School Annual Day</p>
+          <p className="font-display text-sm uppercase tracking-[0.3em] text-primary">RPS Annual Day</p>
           <h1 className="mt-2 font-display text-5xl font-bold text-foreground md:text-6xl">Avatar Booth</h1>
           <p className="mt-3 text-muted-foreground">1. Take a live photo · 2. Pick an avatar · 3. Download!</p>
         </header>
@@ -149,7 +150,7 @@ function Index() {
             <button onClick={startCam} className="btn-festive">{photo ? "🔄 Retake" : "🎥 Open camera"}</button>
           )}
           {result && final && (
-            <a href={result} download="annual-day-avatar.png" className="btn-outline-festive">⬇️ Download</a>
+            <a href={result} download="rps-annual-day-avatar.png" className="btn-outline-festive">⬇️ Download</a>
           )}
         </div>
 
