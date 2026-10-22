@@ -25,7 +25,6 @@ const AVATARS = [
   { name: "Royal", emoji: "👑", prompt: "a majestic royal monarch with an ornate golden jeweled crown, ruby velvet robes, palace throne room behind, rich oil-painting style" },
   { name: "Pixel", emoji: "👾", prompt: "a charming retro 16-bit pixel-art video game hero, chunky pixels, glowing arcade game screen background with coins and power-ups" },
   { name: "Wizard", emoji: "🪄", prompt: "a wise young wizard with a pointed star hat, swirling glowing magic spell in hand, floating spell books and purple sparkling magic energy" },
-  { name: "Clay", emoji: "🧸", prompt: "an adorable claymation figure with fingerprint clay texture, soft stop-motion movie look, warm miniature film-set background" },
   { name: "Rockstar", emoji: "🎸", prompt: "a cool rockstar with spiky hair, leather jacket and electric guitar, neon stage lights, laser beams and confetti exploding behind" },
   { name: "Cricket Star", emoji: "🏏", prompt: "a cricket superstar in a glowing team jersey holding a golden bat aloft, roaring stadium floodlights and cheering crowd behind, triumphant celebration" },
 ];
