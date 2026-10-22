@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiEditImageRouteImport } from './routes/api/edit-image'
+import { Route as ApiShareAvatarRouteImport } from './routes/api/share-avatar'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +23,40 @@ const ApiEditImageRoute = ApiEditImageRouteImport.update({
   path: '/api/edit-image',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiShareAvatarRoute = ApiShareAvatarRouteImport.update({
+  id: '/api/share-avatar',
+  path: '/api/share-avatar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/edit-image': typeof ApiEditImageRoute
+  '/api/share-avatar': typeof ApiShareAvatarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/edit-image': typeof ApiEditImageRoute
+  '/api/share-avatar': typeof ApiShareAvatarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/edit-image': typeof ApiEditImageRoute
+  '/api/share-avatar': typeof ApiShareAvatarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/edit-image'
+  fullPaths: '/' | '/api/edit-image' | '/api/share-avatar'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/edit-image'
-  id: '__root__' | '/' | '/api/edit-image'
+  to: '/' | '/api/edit-image' | '/api/share-avatar'
+  id: '__root__' | '/' | '/api/edit-image' | '/api/share-avatar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiEditImageRoute: typeof ApiEditImageRoute
+  ApiShareAvatarRoute: typeof ApiShareAvatarRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +75,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiEditImageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/share-avatar': {
+      id: '/api/share-avatar'
+      path: '/api/share-avatar'
+      fullPath: '/api/share-avatar'
+      preLoaderRoute: typeof ApiShareAvatarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiEditImageRoute: ApiEditImageRoute,
+  ApiShareAvatarRoute: ApiShareAvatarRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
