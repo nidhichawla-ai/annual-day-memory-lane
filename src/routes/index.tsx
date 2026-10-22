@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import QRCode from "qrcode";
 import { streamImage } from "@/lib/stream-image";
 
 export const Route = createFileRoute("/")({
@@ -39,6 +40,8 @@ function Index() {
   const [final, setFinal] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [qr, setQr] = useState<string | null>(null);
+  const [qrBusy, setQrBusy] = useState(false);
 
   const startCam = async () => {
     setError(null);
@@ -80,12 +83,33 @@ function Index() {
     }, "image/jpeg", 0.85);
   };
 
+  const makeQr = async () => {
+    if (!result) return;
+    setQrBusy(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/share-avatar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dataUrl: result }),
+      });
+      if (!res.ok) throw new Error("Couldn't make the QR code");
+      const { url } = (await res.json()) as { url: string };
+      setQr(await QRCode.toDataURL(url, { width: 448, margin: 1 }));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Couldn't make the QR code");
+    } finally {
+      setQrBusy(false);
+    }
+  };
+
   const make = async () => {
     if (!photo) return;
     setBusy(true);
     setError(null);
     setResult(null);
     setFinal(false);
+    setQr(null);
     const form = new FormData();
     form.append("image", new File([photo], "photo.jpg", { type: "image/jpeg" }));
     form.append(
@@ -154,6 +178,21 @@ function Index() {
           {result && final && (
             <a href={result} download="rps-annual-day-avatar.png" className="btn-outline-festive">⬇️ Download</a>
           )}
+          {result && final && (
+            <button onClick={makeQr} disabled={qrBusy} className="btn-outline-festive">
+              {qrBusy ? "⏳ Making QR…" : "📱 QR for phone"}
+            </button>
+          )}
+        </div>
+        {qr && (
+          <div className="mt-5 flex flex-col items-center gap-2">
+            <div className="card-pop p-3">
+              <img src={qr} alt="Scan to download your avatar" className="h-56 w-56" />
+            </div>
+            <p className="text-sm text-muted-foreground">Scan with your phone camera to download</p>
+          </div>
+        )}
+        <div>
         </div>
 
         <h2 className="mt-10 text-center font-display text-2xl font-bold">Choose your avatar</h2>
