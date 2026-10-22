@@ -24,9 +24,10 @@ const AVATARS = [
   { name: "Astronaut", emoji: "🚀", prompt: "a brave astronaut in a detailed white space suit with glowing visor reflections, floating among colorful nebulae, planets and shooting stars" },
   { name: "Royal", emoji: "👑", prompt: "a majestic royal monarch with an ornate golden jeweled crown, ruby velvet robes, palace throne room behind, rich oil-painting style" },
   { name: "Pixel", emoji: "👾", prompt: "a charming retro 16-bit pixel-art video game hero, chunky pixels, glowing arcade game screen background with coins and power-ups" },
-  { name: "Wizard", emoji: "🪄", prompt: "a wise young wizard with a pointed star hat, swirling glowing magic spell in hand, floating spell books and purple sparkling magic energy" },
+  { name: "Wizard", emoji: "🔮", prompt: "a wise young wizard with a pointed star hat, swirling glowing magic spell in hand, floating spell books and purple sparkling magic energy" },
   { name: "Rockstar", emoji: "🎸", prompt: "a cool rockstar with spiky hair, leather jacket and electric guitar, neon stage lights, laser beams and confetti exploding behind" },
   { name: "Cricket Star", emoji: "🏏", prompt: "a cricket superstar in a glowing team jersey holding a golden bat aloft, roaring stadium floodlights and cheering crowd behind, triumphant celebration" },
+  { name: "Hogwarts", emoji: "⚡", prompt: "a Harry Potter movie style young wizard student wearing black Hogwarts school robes, red and gold striped scarf, round glasses, holding a wooden wand with glowing spell, magical castle great hall with floating candles behind, cinematic movie still" },
 ];
 
 function Index() {
@@ -113,11 +114,11 @@ function Index() {
     form.append("image", new File([photo], "photo.jpg", { type: "image/jpeg" }));
     form.append(
       "prompt",
-      `Turn the person in this photo into ${AVATARS[style]!.prompt}. Keep their face, hairstyle and expression recognizable. IMPORTANT: add a big bold festive banner in the background that clearly reads "RPS ANNUAL DAY" in large colorful glowing celebration letters — the text must be spelled exactly "RPS ANNUAL DAY". Head and shoulders portrait, vibrant colors.`,
+      `Turn the person in this photo into ${AVATARS[style]!.prompt}. Keep their face, hairstyle and expression recognizable. IMPORTANT: add a big bold festive banner in the background that clearly reads "ROOTED IN PRAGYA" in large colorful glowing celebration letters — the text must be spelled exactly "ROOTED IN PRAGYA". Head and shoulders portrait, vibrant colors.`,
     );
     form.append("quality", "low");
     form.append("size", "1024x1024");
-    form.append("partial_images", "2");
+    form.append("partial_images", "1");
     try {
       await streamImage("/api/edit-image", form, (src, isFinal) => {
         setResult(src);
