@@ -211,7 +211,7 @@ function Index() {
           {AVATARS.map((a, i) => (
             <button
               key={a.name}
-              onClick={() => setStyle(i)}
+              onClick={() => { setStyle(i); setQr(null); setQrBusy(false); runId.current++; }}
               className={`style-tile ${style === i ? "style-tile-active" : ""}`}
             >
               <span className="text-3xl">{a.emoji}</span>
