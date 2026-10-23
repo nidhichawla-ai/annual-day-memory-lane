@@ -189,12 +189,13 @@ function Index() {
           {result && final && (
             <a href={result} download="rps-annual-day-avatar.png" className="btn-outline-festive">⬇️ Download</a>
           )}
-          {result && final && (
-            <button onClick={makeQr} disabled={qrBusy} className="btn-outline-festive">
-              {qrBusy ? "⏳ Making QR…" : "📱 QR for phone"}
+          {result && final && !qr && !qrBusy && (
+            <button onClick={() => void makeQr(result, runId.current)} className="btn-outline-festive">
+              📱 QR for phone
             </button>
           )}
         </div>
+        {qrBusy && <p className="mt-4 text-center text-sm text-muted-foreground">⏳ Generating QR code…</p>}
         {qr && (
           <div className="mt-5 flex flex-col items-center gap-2">
             <div className="card-pop p-3">
