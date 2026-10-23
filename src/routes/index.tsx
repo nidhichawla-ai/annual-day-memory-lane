@@ -45,6 +45,7 @@ function Index() {
 
   const startCam = async () => {
     setError(null);
+    setQr(null);
     try {
       const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: 720, height: 720 } });
       setCamOn(true);
@@ -63,6 +64,7 @@ function Index() {
   };
 
   useEffect(() => () => stopCam(), []);
+  useEffect(() => () => { if (photoUrl) URL.revokeObjectURL(photoUrl); }, [photoUrl]);
 
   const snap = () => {
     const v = videoRef.current;
@@ -79,37 +81,42 @@ function Index() {
       setPhoto(b);
       setPhotoUrl(URL.createObjectURL(b));
       setResult(null);
+      setFinal(false);
+      setQr(null);
       stopCam();
     }, "image/jpeg", 0.85);
   };
 
-  const makeQr = async () => {
-    if (!result) return;
+  const runId = useRef(0);
+
+  const makeQr = async (src: string, id: number) => {
     setQrBusy(true);
-    setError(null);
     try {
       const res = await fetch("/api/share-avatar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ dataUrl: result }),
+        body: JSON.stringify({ dataUrl: src }),
       });
       if (!res.ok) throw new Error("Couldn't make the QR code");
-      const { url } = (await res.json()) as { url: string };
-      setQr(await QRCode.toDataURL(url, { width: 448, margin: 1 }));
+      const { id: photoId } = (await res.json()) as { id: string };
+      const code = await QRCode.toDataURL(`${window.location.origin}/photo/${photoId}`, { width: 448, margin: 1 });
+      if (runId.current === id) setQr(code);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't make the QR code");
+      if (runId.current === id) setError(e instanceof Error ? e.message : "Couldn't make the QR code");
     } finally {
-      setQrBusy(false);
+      if (runId.current === id) setQrBusy(false);
     }
   };
 
   const make = async () => {
     if (!photo) return;
+    const id = ++runId.current;
     setBusy(true);
     setError(null);
     setResult(null);
     setFinal(false);
     setQr(null);
+    setQrBusy(false);
     const form = new FormData();
     form.append("image", new File([photo], "photo.jpg", { type: "image/jpeg" }));
     form.append(
@@ -119,16 +126,20 @@ function Index() {
     form.append("quality", "low");
     form.append("size", "1024x1024");
     form.append("partial_images", "1");
+    let last: string | null = null;
     try {
       await streamImage("/api/edit-image", form, (src, isFinal) => {
+        if (runId.current !== id) return;
         setResult(src);
         setFinal(isFinal);
+        if (isFinal) last = src;
       });
     } catch (e) {
       setError(e instanceof Error ? e.message : "Something went wrong");
     } finally {
       setBusy(false);
     }
+    if (last && runId.current === id) void makeQr(last, id);
   };
 
   return (
@@ -178,12 +189,13 @@ function Index() {
           {result && final && (
             <a href={result} download="rps-annual-day-avatar.png" className="btn-outline-festive">⬇️ Download</a>
           )}
-          {result && final && (
-            <button onClick={makeQr} disabled={qrBusy} className="btn-outline-festive">
-              {qrBusy ? "⏳ Making QR…" : "📱 QR for phone"}
+          {result && final && !qr && !qrBusy && (
+            <button onClick={() => void makeQr(result, runId.current)} className="btn-outline-festive">
+              📱 QR for phone
             </button>
           )}
         </div>
+        {qrBusy && <p className="mt-4 text-center text-sm text-muted-foreground">⏳ Generating QR code…</p>}
         {qr && (
           <div className="mt-5 flex flex-col items-center gap-2">
             <div className="card-pop p-3">
@@ -200,7 +212,7 @@ function Index() {
           {AVATARS.map((a, i) => (
             <button
               key={a.name}
-              onClick={() => setStyle(i)}
+              onClick={() => { setStyle(i); setQr(null); setQrBusy(false); runId.current++; }}
               className={`style-tile ${style === i ? "style-tile-active" : ""}`}
             >
               <span className="text-3xl">{a.emoji}</span>
